@@ -2,12 +2,48 @@
 <html lang="">
   <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="./style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
+    <title>Flash Card App</title>
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div id="app">
+      <h1> {{deckName}}</h1>
+
+      <div v-on:click="flipped = !flipped" class="card">
+        <h2 v-text="flipped ? '' : cards[index].front"></h2>
+        <div v-html="flipped ? cards[index].back: ''"></div>
+      </div>
+      <div>
+        <button v-on:click="move(1)" type="button">&#8594;</button>
+        <button v-on:click="move(-1)" type="button">&#8592;</button>
+      </div>
+      <a v-bind:href="readMoreURL" target="_blank">Read more on Vue.js</a>
+    </div>
+    <script src="data.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const FlashCardApp = {
+        data() {
+          return {
+            deckName: "Vue.js Fundamentals",
+            cards,
+            flipped: false,
+            readMoreURL: "https://vuejs.org",
+            index: 0
+          };
+        },
+        methods: {
+          move(change) {
+            if (change <= 8) {
+              this.index+= change;
+              this.flipped = false;
+            } 
+          }
+        }
+      };
+      const app = Vue.createApp(FlashCardApp).mount("#app")
+
+    </script>
   </body>
 </html>
